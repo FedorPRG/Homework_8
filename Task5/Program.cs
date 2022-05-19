@@ -1,57 +1,52 @@
-﻿void PrintArray(int[,,] matr)
+﻿void PrintArray(int[,] matr)
 {
     for (int i = 0; i < matr.GetLength(0); i++)
     {
         for (int j = 0; j < matr.GetLength(1); j++)
         {
-            for (int k = 0; k < matr.GetLength(2); k++)
-            {
-                Console.Write($"{matr[i, j, k]} - {i}, {j}, {k}.");
-                Console.WriteLine();
-            }
+            if (matr[i, j] < 10) Console.Write($" {matr[i, j]} ");
+            else Console.Write($"{matr[i, j]} ");
         }
+        Console.WriteLine();
     }
 }
-
-void FillArray(int[,,] matr)
+void FillArray(int[,] matr, int k)
 {
-    for (int i = 0; i < matr.GetLength(0); i++)
+    if (k == 0)
     {
-        for (int j = 0; j < matr.GetLength(1); j++)
+        for (int j = k + 1; j < matr.GetLength(1); j++)
         {
-            matr[i, j, 0] = new Random().Next(10, 100);            
-            for (int k = 1; k < matr.GetLength(2); k++)
-            {
-                matr[i, j, k] = new Random().Next(10, 100);
-                for (int l = 0; l < matr.GetLength(0); l++)
-                {
-                    for (int m = 0; m < matr.GetLength(1); m++)
-                    {                       
-                        for (int n = 0; n < k; n++)
-                        {
-                            if (matr[i, j, k] == matr[l, m, n])
-                            {
-                                k--; 
-                            }
-                        }
-                    }
-                }
-            }
+            matr[k, j] = matr[k, j - 1] + 1;
         }
     }
+    else
+    {
+        for (int j = k; j < matr.GetLength(1) - k; j++)
+        {
+            matr[k, j] = matr[k, j - 1] + 1;
+        }
+    }
+    for (int i = k + 1; i < matr.GetLength(0) - k; i++)
+    {
+        matr[i, matr.GetLength(1) - k - 1] = matr[i - 1, matr.GetLength(1) - k - 1] + 1;
+    }
+    for (int j = matr.GetLength(1) - k - 2; j >= k; j--)
+    {
+        matr[matr.GetLength(0) - k - 1, j] = matr[matr.GetLength(0) - k - 1, j + 1] + 1;
+    }
+    for (int i = matr.GetLength(1) - k - 2; i > k; i--)
+    {
+        matr[i, k] = matr[i + 1, k] + 1;
+    }
 }
-Console.Write("Введите первый размер массива: ");
-int m = int.Parse(Console.ReadLine()!);
-
-Console.Write("Введите второй размер массива: ");
+Console.Write("Матрица размером nxn. Введите число n: ");
 int n = int.Parse(Console.ReadLine()!);
 
-Console.Write("Введите третий размер в массива: ");
-int l = int.Parse(Console.ReadLine()!);
-
-int[,,] matrix = new int[m, n, l];
-
-FillArray(matrix);
+int[,] matrix = new int[n, n];
+matrix[0, 0] = 1;
+for (int k = 0; k < n / 2; k++)
+{
+    FillArray(matrix, k);
+}
+if (n % 2 > 0) matrix[n / 2, n / 2] = n * n;
 PrintArray(matrix);
-Console.WriteLine();
-

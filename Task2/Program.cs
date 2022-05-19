@@ -15,7 +15,8 @@ void FillArray(int[,] matr)
     {
         for (int j = 0; j < matr.GetLength(1); j++)
         {
-            matr[i, j] = new Random().Next(1, 3);
+            matr[i, j] = new Random().Next(1, 3);//специально, чтобы было несколько строк
+             //с одинаковой минимальной суммой
         }
     }
 }
@@ -44,7 +45,7 @@ for (int i = 0; i < matrix.GetLength(0); i++)
 }
 int min = sum[0];
 int iSearch=0;
-for (int i = sum.Length-1; i > -1; i--)
+for (int i = sum.Length-1; i > -1; i--)//чтобы при выводе можно было поставить точку
 {
     if (min > sum[i])
     {
